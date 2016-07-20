@@ -28,6 +28,9 @@
     "node-osc": "*",
     "node.js": "*",
     "socket.io": "*"
+  },
+  "engines": {
+    "node": "6.2.2"
   }
 }
 
