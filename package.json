@@ -1,0 +1,11 @@
+{
+	"name":"chat",
+	"version":"0.0.1",
+	"private":"true",
+	"dependencies":{
+		"bower":"*",
+		"node-osc":"*",
+		"socket.io":"*",
+		"express":"*"
+	}
+}
