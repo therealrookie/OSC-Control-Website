@@ -1,0 +1,31 @@
+{
+  "name": "poster-mapping",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rfikes4/postermapping.git"
+  },
+  "keywords": [
+    "node-osc",
+    "node.js",
+    "socket.io"
+  ],
+  "author": "Robert Fikes IV",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rfikes4/postermapping/issues"
+  },
+  "homepage": "https://github.com/rfikes4/postermapping#readme",
+  "dependencies": {
+    "express": "*",
+    "node-osc": "*",
+    "node.js": "*",
+    "socket.io": "*"
+  }
+}
