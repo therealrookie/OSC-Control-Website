@@ -1,66 +1,14 @@
 let app       =     require("express")();
 let express   =     require("express");
 let http      =     require('http').Server(app);
-let io        =     require('socket.io')(http);
+let io        =     require('socket.io')(3000, {
+    cors: {
+        origin: ["http://localhost:8080"],
+    },
+}));
 let osc       =     require('node-osc');
 let oscServer =     new osc.Server(22223, '127.0.0.1');
 let client    =     new osc.Client('127.0.0.1', 3000);
-
-const joystick = document.querySelector('.joystick');
-const knob = document.querySelector('.knob');
-
-let isDragging = false;
-let currentX;
-let currentY;
-let initialX;
-let initialY;
-let xOffset = 0;
-let yOffset = 0;
-
-knob.addEventListener("mousedown", dragStart);
-knob.addEventListener("mouseup", dragEnd);
-knob.addEventListener("mouseout", dragEnd);
-knob.addEventListener("mousemove", drag);
-
-function dragStart(e) {
-    initialX = 0;//e.clientX - xOffset;
-    initialY = 0;//e.clientY - yOffset;
-
-    isDragging = true;
-}
-
-function dragEnd(e) {
-    initialX = currentX;
-    initialY = currentY;
-
-    isDragging = false;
-
-    xOffset = 0;
-    yOffset = 0;
-    setTranslate(joystick.offsetWidth / 2 - 1, joystick.offsetHeight / 2 - 1, knob);
-}
-
-function drag(e) {
-    if (isDragging) {
-        e.preventDefault();
-        currentX = e.clientX - initialX;
-        currentY = e.clientY - initialY;
-
-        xOffset = currentX;
-        yOffset = currentY;
-
-        setTranslate(currentX, currentY, knob);
-
-    }
-}
-
-function setTranslate(xPos, yPos, el) {
-    //if (!isDragging)
-    //	xPos = yPos = 0;
-
-    el.style.left = xPos + "px";
-    el.style.top = yPos + "px";
-}
 
 // ========== Pages ========== //
 // Allows acess to all files inside 'public' folder.
@@ -90,18 +38,21 @@ http.listen(3000,function(){
 io.sockets.on('connection', function(socket){
   socket.on('send message', function(x, y){
 
-
-      let oscAddress = "/P2Movement";
-      let oscArguments = [x, y];
-
-      let oscMessage = new osc.Message(oscAddress);
-      oscMessage.append(oscArguments[0]);
-      oscMessage.append(oscArguments[1]);
-
-
-      client.send(oscMessage);
-    console.log(oscMessage);
   });
 });
+
+function sendOSC(x, y) {
+    let oscAddress = "/P2Movement";
+    let oscArguments = [x, y];
+
+    let oscMessage = new osc.Message(oscAddress);
+    oscMessage.append(oscArguments[0]);
+    oscMessage.append(oscArguments[1]);
+
+
+    client.send(oscMessage);
+    console.log(oscMessage);
+}
+
 
 
