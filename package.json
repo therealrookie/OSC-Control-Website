@@ -23,14 +23,13 @@
   },
   "homepage": "https://github.com/rfikes4/postermapping#readme",
   "dependencies": {
-    "bower":"*",
+    "bower": "*",
     "express": "*",
     "node-osc": "*",
     "node.js": "*",
-    "socket.io": "*"
+    "socket.io": "^4.5.4"
   },
   "engines": {
     "node": "6.2.2"
   }
 }
-

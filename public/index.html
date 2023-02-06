@@ -1,14 +1,87 @@
 <html>
 <head>
-	<title>Poster Mapping</title>
+	<title>Joystick</title>
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<button>SEND</button>
+
+<div class="joystick">
+	<div class="knob"></div>
+</div>
+
+<script src="server.js"></script>
+
 <script>
+	const joystick = document.querySelector('.joystick');
+	const knob = document.querySelector('.knob');
+
+	let isDragging = false;
+	let currentX;
+	let currentY;
+	let initialX;
+	let initialY;
+	let xOffset = 0;
+	let yOffset = 0;
+
+	knob.addEventListener("mousedown", dragStart);
+	knob.addEventListener("mouseup", dragEnd);
+	knob.addEventListener("mouseout", dragEnd);
+	knob.addEventListener("mousemove", drag);
+
+	function dragStart(e) {
+		initialX = 0;//e.clientX - xOffset;
+		initialY = 0;//e.clientY - yOffset;
+
+		isDragging = true;
+	}
+
+	function dragEnd(e) {
+		initialX = currentX;
+		initialY = currentY;
+
+		isDragging = false;
+
+		xOffset = 0;
+		yOffset = 0;
+		setTranslate(joystick.offsetWidth / 2 - 1, joystick.offsetHeight / 2 - 1, knob);
+	}
+
+	function drag(e) {
+		if (isDragging) {
+			e.preventDefault();
+			currentX = e.clientX - initialX;
+			currentY = e.clientY - initialY;
+
+			xOffset = currentX;
+			yOffset = currentY;
+
+			setTranslate(currentX, currentY, knob);
+
+		}
+	}
+
+	function setTranslate(xPos, yPos, el) {
+		//if (!isDragging)
+		//	xPos = yPos = 0;
+
+		el.style.left = xPos + "px";
+		el.style.top = yPos + "px";
+
+		send(xPos, yPos);
+	}
+
+	jQuery(function($) {
+		let socket = io.connect();
+		function send(x, y) {
+			socket.emit('send message');
+		}
+	});
+
+
 	jQuery(function($){
-		var socket = io.connect();
+		let socket = io.connect();
 		$('button').click(function(){
 		    socket.emit('send message');
 		});
