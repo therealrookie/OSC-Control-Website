@@ -1,11 +1,7 @@
 let app       =     require("express")();
 let express   =     require("express");
 let http      =     require('http').Server(app);
-let io        =     require('socket.io')(3000, {
-    cors: {
-        origin: ["http://localhost:8080"],
-    },
-}));
+let io        =     require('socket.io')(3000);
 let osc       =     require('node-osc');
 let oscServer =     new osc.Server(22223, '127.0.0.1');
 let client    =     new osc.Client('127.0.0.1', 3000);
